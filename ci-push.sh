@@ -1,6 +1,6 @@
 #/bin/sh
 
-REPO="github.com/sledilnik/data"
+REPO="github.com/treker-mk/data"
 
 # copy new data into repo
 git checkout master
