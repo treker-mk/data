@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/sledilnik/data.svg?branch=master)](https://travis-ci.com/sledilnik/data)
+[![Build Status](https://travis-ci.com/treker-mk/data.svg?branch=master)](https://travis-ci.com/treker-mk/data)
 
 # Slovenia COVID-19 Data Collection - Sledilnik.org
 
