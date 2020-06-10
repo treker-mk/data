@@ -2,21 +2,17 @@ language: python
 os: linux
 dist: bionic
 python: 3.7
-
 branches:
   only:
   - master
-
-cache: 
+cache:
   pip: true
-      
 install: pip install -r requirements.txt
-script: 
-  - python update.py
-  - git config --global user.email "travis@travis-ci.org"
-  - git config --global user.name "Travis CI"
-  - sh ci-push.sh
-
+script:
+- python update.py
+- git config --global user.email "travis@travis-ci.org"
+- git config --global user.name "Travis CI"
+- sh ci-push.sh
 notifications:
   slack:
-    secure: "isjPqS1DcuKszMnA8aFELAHpfikMy3Lt2MW+pKqHZEbKXpeVXjEc6gbJwqucNxqux0deKRbyDt0/6ARO/H9QCjhr2Wi9tXQgShqPn61pCtMMF/vEXO214fwg7c20Q+rqLInMWiB8VaLsJe95gLtFgbaNqQHzCCeF+E7yAVkdhs75OD7Po68E4ZtNOh7iw84yW1F7HRSQOX2lS7urpb4QCWQMUkjbpJprpIgZHtjFH1gLq2+Ge0EmctgqfL4DN4WdNwneWpOo3guteQ0uYSIW/eBZ+Q5K52obRKWNWbl/CWWIKzz5m429A9zJiqaf0SQid3mpU01EOCDvmaPOclLoVisJ94BlQ1sxbx3Q2CqFhyuFEESXViGRbS8CZuSro24LsMJ7TRLSxwmcONoiON7UdZyS+C0xbRYCDCtzW4a3blG/LcDOF7ikvKsRzTmdKc/J3BPUon/AmXK9lub6ige0QtdJu7PbD3RkRxxQ07MLo9NmwrTtWRhKAAxzLQDOzLWlSjkd0Mn6UpcGeoJbZFsPyO3NVu7R0Nh/ArbQKyQmPy8cI76FTKy6CyCnvGsf2KKkzUViWT4mTD+/icB3EL5uIW/qi4XHu5njyLnn+xsVvi2Kc6Ny1lnIrPolfGGL0jZuAbbpG/brJmbmibqIoM59oao06yUvwhQLjLWKFbiecBw="
+    secure: Ptc5MmZ+jUWCkK2Ej1AY1sbhikdtuq1WrLvuV5+PnVgRqCSzImx4q8Wd3gSVc5A4iR9vZS0+tyLay1vcFo2RUVYSuwwftqba1OHIkrlf9833C8ysCcrZxya5Eolrmaurw5sfE6LDgISprQhEbhWBvldyxkNbvwxShGNoer4lSkbHlvZEc2yPrmjkeLg9+v9R69oEQy0155jTGrFbcnVxQXsip4xofpMw1MtdicVZHJghn0MmCbmNw5KDgp2yU2tM0g20P7JihCG6haKlDvWVNWMiOzbGG9lzoZRZ8KFL9VzZLeVUvs7ma81Z2HmqQ9Pjom7oY/hAuddAJmcYWcRoVvMbNR9PDaSyl3Vmpl+hHXAnS6UvtVwF0woE9hzm1aSt2JJqmMlBl2HPmBxVTfU7gzZSdNKDLIQiX5Wn9VizspFyiTse4+ArPIC2XYeX1PkzWCsIhkGRzF+BJXkq3A1oASTU3JSxs6fwK35wYmjCxObk7gOTjXhFZlaEO9zYrvxR2wx+rkMJxjrVYfrCdeaHIBD1hZ4h3QrMrjlBhPO737insUIYxiJDXmloDbo2jWT1iav5HvuFoAxaI1prTxFPo1zKCtQqUM9KUkBGM/CBOuilpy4+KweIj5vLcE6Yb3LmpKAEq2bQj/iZARG7O8cDJ/9lC/1/d3OeLnYGslMsjH0=
