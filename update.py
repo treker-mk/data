@@ -7,8 +7,8 @@ import pandas as pd
 
 import sheet2csv
 
-SHEET_ID_DEV = "157FidK6pugBrnPRcdUdEKRfR7sJACLh84t2qLM1GDrY"
-SHEET_ID_PROD = "157FidK6pugBrnPRcdUdEKRfR7sJACLh84t2qLM1GDrY"
+SHEET_ID_DEV = "1dIv9DjXFoMst4_AiMUcQZNbSJSVs1MxlIdj7fxjGhA0"
+SHEET_ID_PROD = "1dIv9DjXFoMst4_AiMUcQZNbSJSVs1MxlIdj7fxjGhA0"
 
 SHEET_ID = SHEET_ID_PROD
 
