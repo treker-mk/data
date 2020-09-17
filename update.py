@@ -21,6 +21,9 @@ RANGE_SAFETY_MEASURES = "Ukrepi!A2:ZZ"
 RANGE_DSO = "DSO!A3:ZZ"
 RANGE_DECEASED_REGIONS = "Umrli:Kraji!A1:ZZ"
 RANGE_ACTIVE_REGIONS = "Aktivni:Kraji!A1:ZZ"
+RANGE_SKOPJE_MUNICIPALITIES = "SkopjeOpstini!A1:ZZ"
+RANGE_DECEASED_SKOPJE_MUNICIPALITIES = "Umrli:SkopjeOpstini!A1:ZZ"
+RANGE_ACTIVE_SKOPJE_MUNICIPALITIES = "Aktivni:SkopjeOpstini!A1:ZZ"
 
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 
@@ -73,6 +76,23 @@ def computeMunicipalities(update_time):
         with open("{}.timestamp".format(filename), "w") as f:
             f.write(str(update_time))
 
+def computeSkopjeMunicipalities(update_time):
+    filename = 'csv/skopje.csv'
+    old_hash = sha1sum(filename)
+    dfRegions = pd.read_csv('csv/skopje-municipalities.csv', index_col='date') 
+    dfActive = pd.read_csv('csv/active-skopje-municipalities.csv', index_col='date')
+    dfDeceased = pd.read_csv('csv/deceased-skopje-municipalities.csv', index_col='date')
+    dfRegions.columns = [str(col) + '.cases.confirmed.todate' for col in dfRegions.columns]
+    dfActive.columns = [str(col) + '.cases.active' for col in dfActive.columns]
+    dfDeceased.columns = [str(col) + '.deceased.todate' for col in dfDeceased.columns]
+    # merged = pd.concat([dfRegions, dfDeceased], axis=1, join='outer').sort_index(axis=1)
+    merged = dfRegions.join(dfActive).join(dfDeceased).sort_index(axis=1)
+    merged.to_csv(filename, float_format='%.0f', index_label='date')
+    new_hash = sha1sum(filename)
+    if old_hash != new_hash:
+        with open("{}.timestamp".format(filename), "w") as f:
+            f.write(str(update_time))
+
 if __name__ == "__main__":
     update_time = int(time.time())
     import_sheet(update_time, RANGE_STATS, "csv/stats.csv")
@@ -84,4 +104,7 @@ if __name__ == "__main__":
     import_sheet(update_time, RANGE_DSO, "csv/retirement_homes.csv")
     import_sheet(update_time, RANGE_DECEASED_REGIONS, "csv/deceased-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     import_sheet(update_time, RANGE_ACTIVE_REGIONS, "csv/active-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, RANGE_SKOPJE_MUNICIPALITIES, "csv/skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, RANGE_DECEASED_SKOPJE_MUNICIPALITIES, "csv/active-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, RANGE_ACTIVE_SKOPJE_MUNICIPALITIES, "csv/deceased-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     computeMunicipalities(update_time)
