@@ -108,3 +108,4 @@ if __name__ == "__main__":
     import_sheet(update_time, RANGE_DECEASED_SKOPJE_MUNICIPALITIES, "csv/active-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     import_sheet(update_time, RANGE_ACTIVE_SKOPJE_MUNICIPALITIES, "csv/deceased-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     computeMunicipalities(update_time)
+    computeSkopjeMunicipalities(update_time)
