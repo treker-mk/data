@@ -10,20 +10,24 @@ import sheet2csv
 SHEET_ID_DEV = "1dIv9DjXFoMst4_AiMUcQZNbSJSVs1MxlIdj7fxjGhA0"
 SHEET_ID_PROD = "1dIv9DjXFoMst4_AiMUcQZNbSJSVs1MxlIdj7fxjGhA0"
 
-SHEET_ID = SHEET_ID_PROD
+SHEET_MAIN = "1dIv9DjXFoMst4_AiMUcQZNbSJSVs1MxlIdj7fxjGhA0"
 
 RANGE_STATS = "Podatki!A3:ZZ"
 RANGE_PATIENTS = "Pacienti!A3:ZZ"
 RANGE_REGIONS = "Kraji!A1:ZZ"
 RANGE_HOSPITALS = "Zdr.sistem!A3:ZZ"
 RANGE_ICU = "ICU!A3:ZZ"
-RANGE_SAFETY_MEASURES = "Ukrepi!A2:ZZ"
 RANGE_DSO = "DSO!A3:ZZ"
+RANGE_SCHOOLS = "Šole!A3:ZZ"
 RANGE_DECEASED_REGIONS = "Umrli:Kraji!A1:ZZ"
 RANGE_ACTIVE_REGIONS = "Aktivni:Kraji!A1:ZZ"
 RANGE_SKOPJE_MUNICIPALITIES = "SkopjeOpstini!A1:ZZ"
 RANGE_DECEASED_SKOPJE_MUNICIPALITIES = "Umrli:SkopjeOpstini!A1:ZZ"
 RANGE_ACTIVE_SKOPJE_MUNICIPALITIES = "Aktivni:SkopjeOpstini!A1:ZZ"
+RANGE_STATS_WEEKLY = "EPI:weekly!A3:ZZ"
+
+SHEET_MEAS = "1AzBziQ5ySEaY8cv4NMYfc1LopTWbBRX0hWzMVP8Q52M"
+RANGE_SAFETY_MEASURES = "E:Measures!A3:ZZ"
 
 GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 
@@ -46,11 +50,12 @@ def key_mapper_kraji(values):
 
   return keys, values[2:]
 
-def import_sheet(update_time, range, filename, **kwargs):
+def import_sheet(update_time, sheet, range, filename, **kwargs):
+    print("Processing", filename)
     pathlib.Path(os.path.dirname(filename)).mkdir(parents=True, exist_ok=True)
     old_hash = sha1sum(filename)
     try:
-        sheet2csv.sheet2csv(id=SHEET_ID, range=range, api_key=GOOGLE_API_KEY, filename=filename, **kwargs)
+        sheet2csv.sheet2csv(id=sheet, range=range, api_key=GOOGLE_API_KEY, filename=filename, **kwargs)
     except Exception as e:
         print("Failed to import {}".format(filename))
         raise e
@@ -61,6 +66,7 @@ def import_sheet(update_time, range, filename, **kwargs):
 
 def computeMunicipalities(update_time):
     filename = 'csv/municipality.csv'
+    print("Processing", filename)
     old_hash = sha1sum(filename)
     dfRegions = pd.read_csv('csv/regions.csv', index_col='date') 
     dfActive = pd.read_csv('csv/active-regions.csv', index_col='date')
@@ -95,17 +101,22 @@ def computeSkopjeMunicipalities(update_time):
 
 if __name__ == "__main__":
     update_time = int(time.time())
-    import_sheet(update_time, RANGE_STATS, "csv/stats.csv")
-    import_sheet(update_time, RANGE_PATIENTS, "csv/patients.csv")
-    import_sheet(update_time, RANGE_HOSPITALS, "csv/hospitals.csv")
-    import_sheet(update_time, RANGE_ICU, "csv/icu.csv")
-    import_sheet(update_time, RANGE_REGIONS, "csv/regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
-    import_sheet(update_time, RANGE_SAFETY_MEASURES, "csv/safety_measures.csv")
-    import_sheet(update_time, RANGE_DSO, "csv/retirement_homes.csv")
-    import_sheet(update_time, RANGE_DECEASED_REGIONS, "csv/deceased-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
-    import_sheet(update_time, RANGE_ACTIVE_REGIONS, "csv/active-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
-    import_sheet(update_time, RANGE_SKOPJE_MUNICIPALITIES, "csv/skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
-    import_sheet(update_time, RANGE_DECEASED_SKOPJE_MUNICIPALITIES, "csv/deceased-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
-    import_sheet(update_time, RANGE_ACTIVE_SKOPJE_MUNICIPALITIES, "csv/active-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, SHEET_MAIN, RANGE_STATS, "csv/stats.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_STATS_WEEKLY, "csv/stats-weekly.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_PATIENTS, "csv/patients.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_HOSPITALS, "csv/hospitals.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_ICU, "csv/icu.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_DSO, "csv/retirement_homes.csv")
+    import_sheet(update_time, SHEET_MAIN, RANGE_SCHOOLS, "csv/schools.csv")
+
+    import_sheet(update_time, SHEET_MAIN, RANGE_REGIONS, "csv/regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, SHEET_MAIN, RANGE_ACTIVE_REGIONS, "csv/active-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, SHEET_MAIN, RANGE_DECEASED_REGIONS, "csv/deceased-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     computeMunicipalities(update_time)
+
+    import_sheet(update_time, SHEET_MAIN, RANGE_SKOPJE_MUNICIPALITIES, "csv/skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, SHEET_MAIN, RANGE_DECEASED_SKOPJE_MUNICIPALITIES, "csv/deceased-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
+    import_sheet(update_time, SHEET_MAIN, RANGE_ACTIVE_SKOPJE_MUNICIPALITIES, "csv/active-skopje-municipalities.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     computeSkopjeMunicipalities(update_time)
+
+    #import_sheet(update_time, SHEET_MEAS, RANGE_SAFETY_MEASURES, "csv/safety_measures.csv") SLO-spec
