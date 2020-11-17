@@ -107,7 +107,7 @@ if __name__ == "__main__":
     import_sheet(update_time, SHEET_MAIN, RANGE_HOSPITALS, "csv/hospitals.csv")
     import_sheet(update_time, SHEET_MAIN, RANGE_ICU, "csv/icu.csv")
     import_sheet(update_time, SHEET_MAIN, RANGE_DSO, "csv/retirement_homes.csv")
-    import_sheet(update_time, SHEET_MAIN, RANGE_SCHOOLS, "csv/schools.csv")
+    #import_sheet(update_time, SHEET_MAIN, RANGE_SCHOOLS, "csv/schools.csv") SLO-spec
 
     import_sheet(update_time, SHEET_MAIN, RANGE_REGIONS, "csv/regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
     import_sheet(update_time, SHEET_MAIN, RANGE_ACTIVE_REGIONS, "csv/active-regions.csv", rotate=True, key_mapper=key_mapper_kraji, sort_keys=True)
